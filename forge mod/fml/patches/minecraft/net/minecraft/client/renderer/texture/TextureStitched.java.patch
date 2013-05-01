@@ -1,0 +1,52 @@
+--- ../src-base/minecraft/net/minecraft/client/renderer/texture/TextureStitched.java
++++ ../src-work/minecraft/net/minecraft/client/renderer/texture/TextureStitched.java
+@@ -1,5 +1,6 @@
+ package net.minecraft.client.renderer.texture;
+ 
++import cpw.mods.fml.client.TextureFXManager;
+ import cpw.mods.fml.relauncher.Side;
+ import cpw.mods.fml.relauncher.SideOnly;
+ import java.io.BufferedReader;
+@@ -56,6 +57,11 @@
+         this.field_94230_o = (float)(p_94218_4_ + p_94218_6_) / (float)p_94218_1_.func_94276_e() - f1;
+         this.field_94238_p = (float)p_94218_5_ / 16.0F;
+         this.field_94237_q = (float)p_94218_6_ / 16.0F;
++        TextureFXManager.instance().getHelper().doTextureUpload(this);
++        if (this.field_94227_c)
++        {
++            TextureFXManager.instance().getHelper().rotateTexture(this.field_94228_a, this.field_94228_a.func_94273_h());
++        }
+     }
+ 
+     public void func_94217_a(TextureStitched p_94217_1_)
+@@ -137,7 +143,7 @@
+ 
+                 if (i != j && j >= 0 && j < this.field_94226_b.size())
+                 {
+-                    this.field_94228_a.func_94281_a(this.field_94224_d, this.field_94225_e, (Texture)this.field_94226_b.get(j), this.field_94227_c);
++                    this.field_94228_a.func_94281_a(this.field_94224_d, this.field_94225_e, (Texture)this.field_94226_b.get(j), false); //FML: We rotate the textures in init.
+                 }
+             }
+         }
+@@ -148,7 +154,7 @@
+ 
+             if (k != this.field_94222_f)
+             {
+-                this.field_94228_a.func_94281_a(this.field_94224_d, this.field_94225_e, (Texture)this.field_94226_b.get(this.field_94222_f), this.field_94227_c);
++                this.field_94228_a.func_94281_a(this.field_94224_d, this.field_94225_e, (Texture)this.field_94226_b.get(this.field_94222_f), false); //FML: We rotate the textures in init.
+             }
+         }
+     }
+@@ -198,4 +204,12 @@
+             this.field_94236_i = arraylist;
+         }
+     }
++
++    public void createAndUploadTextures()
++    {
++        for (Texture t : ((List<Texture>)field_94226_b))
++        {
++            t.createAndUploadTexture();
++        }
++    }
+ }
